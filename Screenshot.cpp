@@ -60,23 +60,49 @@ bool Screenshot(cv::Mat Image, const std::string& FileName,
                 const int& EndedX, const int& EndedY)
 {
 
-    int Width = EndedX - StartedX;
-    int Heigh = EndedY - StartedY;
+    std::cout << "The startedx is " << StartedX << std::endl;
+    std::cout << "The startedy is " << StartedY << std::endl;
+    std::cout << "The endedx is " << EndedX << std::endl;
+    std::cout << "The enfedy is " << EndedY << std::endl;
+    std::cout << "The cols of image is " << Image.cols << std::endl;
+    std::cout << "The rows of image is " << Image.rows << std::endl;
 
-
-    // when the width or the heigh is zero, return false
-    if (!Width && !Heigh)
+    if (StartedX < 0 )
     {
-        std::cout << "The width or the heigh is zero" << std::endl;
+        std::cout << "The started is smaller than zero." << std::endl;
+        return false;
+    }
+
+    if (StartedY < 0)
+    {
+        std::cout << "The strated is smaller than zero." << std::endl;
         return false;
     }
 
 
+    if (EndedY > Image.rows)
+    {
+        std::cout << "The EndedY is bigger than the width." << std::endl;
+        return false;
+    }
+
+    if (EndedX > Image.cols)
+    {
+        std::cout << "The EndedX is bigger than heigh." << std::endl;
+        return false;
+    }
+
+    int Width = EndedX - StartedX;
+    int Heigh = EndedY - StartedY;
+
+
+
     // get the ROI rectangle.
     cv::Rect ROI(StartedX, StartedY, Width, Heigh);
+    std::cout << "ROI rec." << std::endl;
 
 
-    // get ROI image.
+    // get the ROI image
     cv::Mat ScreenshorImage = Image(ROI);
 
 
