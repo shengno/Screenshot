@@ -46,12 +46,16 @@
  *         false otherwise
  *
  * @author sheng
- * @date  2014-08-26
- * @version 0.1
+ * @date  2014-08-27
+ * @version 0.2
  *
  *
  * @history
  *     <author>       <date>         <version>        <description>
+ *      sheng       2014-08-27          0.2         fixed the bug that the
+ *                                                       program terminaled when
+ *                                                       the mouse is out of
+ *                                                       the image window.
  *      sheng       2014-08-26          0.1          build the module
  *
  */
@@ -59,14 +63,6 @@ bool Screenshot(cv::Mat Image, const std::string& FileName,
                 const int& StartedX, const int& StartedY,
                 const int& EndedX, const int& EndedY)
 {
-
-    std::cout << "The startedx is " << StartedX << std::endl;
-    std::cout << "The startedy is " << StartedY << std::endl;
-    std::cout << "The endedx is " << EndedX << std::endl;
-    std::cout << "The enfedy is " << EndedY << std::endl;
-    std::cout << "The cols of image is " << Image.cols << std::endl;
-    std::cout << "The rows of image is " << Image.rows << std::endl;
-
     if (StartedX < 0 )
     {
         std::cout << "The started is smaller than zero." << std::endl;
