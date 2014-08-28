@@ -29,7 +29,13 @@
 #include "opencv2/opencv.hpp"
 #include <iostream>
 #include <QStringList>
+#include "userdata.h"
 #include "functions.h"
+
+
+static const int VK_DOWN = 40;
+static const int VK_UP = 38;
+static const int ESC = 27;
 
 void Test_OnMouse()
 {
@@ -39,19 +45,27 @@ void Test_OnMouse()
 
     QStringList FileNameList = GetFilesInDirectory(Directory);
 
-    cv::namedWindow("Image", CV_WINDOW_AUTOSIZE);
+    std::string WindowName = "Image";
+    cv::namedWindow(WindowName, CV_WINDOW_AUTOSIZE);
 
     cv::Mat Image;
-    cv::setMouseCallback("Image", &OnMouse, static_cast<void*>(&Image));
+    UserData userdata;
+    userdata.WindowName = WindowName;
+    userdata.OriginImage = &Image;
+    cv::setMouseCallback(WindowName, &OnMouse, static_cast<void*>(&userdata));
+
+    bool IsESC = false;
 
     for (int Index = 0; Index < FileNameList.size(); Index++)
     {
         FileName = FileNameList.at(Index);
+        std::cout << "The name of the image is " <<
+                     FileName.toLocal8Bit().constData() << std::endl;
         FileName = Directory + "/" + FileName;
 
         Image = cv::imread(FileName.toLocal8Bit().constData(),
                            cv::IMREAD_UNCHANGED);
-        cv::imshow("Image", Image);
+        cv::imshow(WindowName, Image);
 
         bool InNext = false;
 
@@ -61,15 +75,46 @@ void Test_OnMouse()
 
             switch (Result)
             {
-                case 'n':
+                case 'd':
                     InNext = true;
                     break;
+
+                case 'u':
+                    if (Index != 0)
+                    {
+                        InNext = true;
+
+                        // back to the front image
+                        Index = Index - 2;
+                    }
+                    break;
+
+
+                case ESC:
+                    IsESC = true;
+                    break;
+
 
                 default:
                     break;
             }
+
+            // break the inner loop
+            if (IsESC)
+            {
+                break;
+            }
         }
+
+        // break the loop
+        if (IsESC)
+        {
+            break;
+        }
+
     }
+
+    cv::destroyAllWindows();
 }
 
 

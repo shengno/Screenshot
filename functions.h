@@ -47,4 +47,12 @@ void OnMouse( int Event, int X, int Y, int flag, void* Userdata);
 
 std::string IntToString(int value);
 
+bool DrawRectangle(cv::Mat& Image, const int& StartedX, const int& StartedY,
+                   const int& EndedX, const int& EndedY,
+                   const cv::Scalar& Color = cv::Scalar(255,0,0),
+                   int Thickness = 2, int LintType = 8);
+
+bool MakingRectanglePoint(int& StartedX, int& StartedY,
+                          int& EndedX, int& EndedY);
+
 #endif // FUNCTIONS_H

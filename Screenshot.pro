@@ -11,7 +11,9 @@ SOURCES += main.cpp \
     OnMouseCalled.cpp \
     SaveImageInJEPG.cpp \
     Test_OnMouse.cpp \
-    IntToString.cpp
+    IntToString.cpp \
+    DrawRectangle.cpp \
+    MakingRectanglePoint.cpp
 
 
 
@@ -39,6 +41,7 @@ LIBS += D:/OpenCV2.4.9/lib/libopencv_videostab249.dll.a
 
 HEADERS += \
     functions.h \
-    IntToString.h
+    IntToString.h \
+    userdata.h
 
 
