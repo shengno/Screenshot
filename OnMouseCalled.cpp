@@ -30,6 +30,7 @@
 #include "opencv2/opencv.hpp"
 #include <iostream>
 #include <string>
+#include "userdata.h"
 
 const std::string PrefixOfFileName = "E:/Database_For_Experiment/car";
 
@@ -49,7 +50,7 @@ const std::string PrefixOfFileName = "E:/Database_For_Experiment/car";
  *
  * @history
  *     <author>       <date>         <version>        <description>
- *      sheng       2014-08-26          0.1
+ *      sheng       2014-08-26          0.1         build the module
  *
  *
  */
@@ -59,8 +60,11 @@ void OnMouse( int Event, int X, int Y, int flag, void* Userdata)
     static int StartedY = -1;
     static int Index = 0;
 
-    // get the Image
-    cv::Mat* Image = static_cast<cv::Mat*>(Userdata);
+
+    // get the Image and the windows name
+    UserData* data = static_cast<UserData*>(Userdata);
+    cv::Mat* Image = data->OriginImage;
+    std::string WindowName = data->WindowName;
 
 
     switch (Event)
@@ -70,8 +74,8 @@ void OnMouse( int Event, int X, int Y, int flag, void* Userdata)
             {
                 StartedX = X;
                 StartedY = Y;
+                std::cout << "Left click" << std::endl;
             }
-            std::cout << "LButtondown is click." << std::endl;
             break;
 
         case CV_EVENT_LBUTTONUP:
@@ -80,17 +84,40 @@ void OnMouse( int Event, int X, int Y, int flag, void* Userdata)
                 std::string FileName = PrefixOfFileName + "/" +
                         IntToString(Index) +".jpg";
 
+                // Making the position to be valid
+                MakingRectanglePoint(StartedX, StartedY, X, Y);
+
+                // Get the image
                 if(!Screenshot(*Image, FileName, StartedX, StartedY, X, Y))
                 {
                     std::cout << "Screenshot failed." << std::endl;
                 }
+
+
+                StartedX = -1;
+                StartedY = -1;
                 Index++;
+
+                // show the orgin image
+                cv::imshow(WindowName, *Image);
             }
             break;
 
         case CV_EVENT_MOUSEMOVE:
-            std::cout << "The mouse is moding" << std::endl;
+            if (StartedX != -1)
+            {
+                cv::Mat ImageCopy;
+                Image->copyTo(ImageCopy);
+
+                // draw rectangle
+                DrawRectangle(ImageCopy, StartedX, StartedY, X, Y);
+
+                // show the image
+                cv::imshow(WindowName, ImageCopy);
+
+            }
             break;
+
 
         default:
             break;
