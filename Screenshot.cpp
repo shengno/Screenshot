@@ -46,12 +46,13 @@
  *         false otherwise
  *
  * @author sheng
- * @date  2014-08-27
- * @version 0.2
+ * @date  2014-08-28
+ * @version 0.2.1
  *
  *
  * @history
  *     <author>       <date>         <version>        <description>
+ *      sheng       2014-08-28         0.2.1         add some comment
  *      sheng       2014-08-27          0.2         fixed the bug that the
  *                                                       program terminaled when
  *                                                       the mouse is out of
@@ -63,6 +64,7 @@ bool Screenshot(cv::Mat Image, const std::string& FileName,
                 const int& StartedX, const int& StartedY,
                 const int& EndedX, const int& EndedY)
 {
+    // check whether the start point is out of the image window
     if (StartedX < 0 )
     {
         std::cout << "The started is smaller than zero." << std::endl;
@@ -76,6 +78,7 @@ bool Screenshot(cv::Mat Image, const std::string& FileName,
     }
 
 
+    // check whether the ended point is out of the image window
     if (EndedY > Image.rows)
     {
         std::cout << "The EndedY is bigger than the width." << std::endl;
@@ -88,6 +91,8 @@ bool Screenshot(cv::Mat Image, const std::string& FileName,
         return false;
     }
 
+
+    // calculating the width and the heigh
     int Width = EndedX - StartedX;
     int Heigh = EndedY - StartedY;
 
